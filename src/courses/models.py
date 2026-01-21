@@ -18,6 +18,7 @@ class Course(models.Model):
     status = models.CharField(max_length=10,
                               choices=PublishStatus.choices,
                               default=PublishStatus.DRAFT)
+    image = models.ImageField()
     access = models.CharField(max_length=10,
                               choices=AccessRequirement.choices,
                               default=AccessRequirement.ANYONE)
