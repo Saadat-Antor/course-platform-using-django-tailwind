@@ -11,6 +11,10 @@ class PublishStatus(models.TextChoices):
     DRAFT = 'draft', 'Draft'
     COMING_SOON = 'soon', 'Coming Soon'
 
+
+def handle_upload(instance, filename):
+    return f"{filename}"
+
 # COURSE Model
 class Course(models.Model):
     title = models.CharField(max_length=100)
@@ -18,10 +22,10 @@ class Course(models.Model):
     status = models.CharField(max_length=10,
                               choices=PublishStatus.choices,
                               default=PublishStatus.DRAFT)
-    image = models.ImageField()
-    access = models.CharField(max_length=10,
+    image = models.ImageField(upload_to=handle_upload,blank=True, null=True)
+    access = models.CharField(max_length=20,
                               choices=AccessRequirement.choices,
-                              default=AccessRequirement.ANYONE)
+                              default=AccessRequirement.EMAIL_REQUIRED)
                                 
 
     @property
