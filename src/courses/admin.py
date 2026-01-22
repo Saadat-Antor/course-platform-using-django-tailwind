@@ -8,7 +8,7 @@ import helpers
 
 class LessonInline(admin.StackedInline):
     model = Lesson
-    readonly_fields = ['public_id','created', 'updated', 'display_image']
+    readonly_fields = ['public_id','created', 'updated', 'display_image', 'display_video']
     extra=0
 
     def display_image(self, obj, *args, **kwargs):
@@ -19,6 +19,16 @@ class LessonInline(admin.StackedInline):
         return format_html(f"<img src='{url}'/>")
     
     display_image.short_description = "Current Image"
+
+    def display_video(self, obj, *args, **kwargs):
+        url = helpers.get_cloudinary_video_obj(
+            obj, 
+            field_name='video',
+            width=550,
+            as_html=True)
+        return format_html(f"{url}")
+    
+    display_video.short_description = "Current Video"
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):

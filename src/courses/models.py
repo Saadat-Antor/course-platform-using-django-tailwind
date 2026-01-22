@@ -110,6 +110,7 @@ class Lesson(models.Model):
                             public_id_prefix=get_public_id_prefix,
                             display_name=get_display_name,
                             tags=["video", "lesson"],
+                            type='private',
                             blank=True, 
                             null=True, 
                             resource_type="video"
