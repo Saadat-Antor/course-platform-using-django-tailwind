@@ -21,12 +21,12 @@ class LessonInline(admin.StackedInline):
     display_image.short_description = "Current Image"
 
     def display_video(self, obj, *args, **kwargs):
-        url = helpers.get_cloudinary_video_obj(
+        video_embed_html = helpers.get_cloudinary_video_obj(
             obj, 
             field_name='video',
             width=550,
             as_html=True)
-        return format_html(f"{url}")
+        return video_embed_html
     
     display_video.short_description = "Current Video"
 

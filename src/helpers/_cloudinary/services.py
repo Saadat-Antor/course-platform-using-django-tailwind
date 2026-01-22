@@ -1,4 +1,5 @@
-
+from django.template.loader import get_template
+from django.conf import settings
 
 def get_cloudinary_image_obj(instance, 
                        field_name='image',
@@ -16,13 +17,6 @@ def get_cloudinary_image_obj(instance,
           return image_obj.image(**image_options)
     url =image_obj.build_url(**image_options)
     return url
-
-
-video_html = """
-<video controls autoplay>
-<source src="{video_url}">
-</video>
-"""
 
 
 def get_cloudinary_video_obj(instance, 
@@ -55,5 +49,9 @@ def get_cloudinary_video_obj(instance,
     url =video_obj.build_url(**video_options)
     
     if as_html:
-          return video_html.format(video_url=url).strip()
+          cloud_name = settings.CLOUDINARY_CLOUD_NAME
+          template_name = "videos\\snippets\\embed.html"
+          tmpl = get_template(template_name)
+          _html = tmpl.render({"video_url": url, "cloud_name": cloud_name})
+          return _html
     return url
