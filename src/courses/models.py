@@ -1,5 +1,8 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
+import helpers
 
+helpers.cloudinary_init()
 
 
 class AccessRequirement(models.TextChoices):
@@ -22,7 +25,8 @@ class Course(models.Model):
     status = models.CharField(max_length=10,
                               choices=PublishStatus.choices,
                               default=PublishStatus.DRAFT)
-    image = models.ImageField(upload_to=handle_upload,blank=True, null=True)
+    # image = models.ImageField(upload_to=handle_upload,blank=True, null=True)
+    image = CloudinaryField("image", null=True)
     access = models.CharField(max_length=20,
                               choices=AccessRequirement.choices,
                               default=AccessRequirement.EMAIL_REQUIRED)
