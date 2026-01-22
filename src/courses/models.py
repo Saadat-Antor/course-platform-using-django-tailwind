@@ -37,7 +37,7 @@ class Course(models.Model):
         return self.status == PublishStatus.PUBLISHED
     
     @property
-    def image_admin(self):
+    def image_admin_url(self):
         if not self.image:
             return ""
         image_options = {
@@ -57,3 +57,13 @@ class Course(models.Model):
             return self.image.image(**image_options)
         url =self.image.build_url(**image_options)
         return url
+    
+# LESSON Model
+class Lesson(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    can_preview = models.BooleanField(default=False, help_text="Can students view this lesson without enrolling?")
+    status = models.CharField(max_length=10,
+                              choices=PublishStatus.choices,
+                              default=PublishStatus.PUBLISHED)
