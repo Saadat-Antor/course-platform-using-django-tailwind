@@ -51,7 +51,10 @@ def get_cloudinary_video_obj(instance,
     if as_html:
           cloud_name = settings.CLOUDINARY_CLOUD_NAME
           template_name = "videos\\snippets\\embed.html"
+          base_color = "#7851A9"
           tmpl = get_template(template_name)
-          _html = tmpl.render({"video_url": url, "cloud_name": cloud_name})
+          _html = tmpl.render({"video_url": url, 
+                               "cloud_name": cloud_name,
+                               "base_color": base_color})
           return _html
     return url
