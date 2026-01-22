@@ -94,13 +94,10 @@ class Course(models.Model):
     
     @property
     def image_admin_url(self):
-        if not self.image:
-            return ""
-        image_options = {
-            "width": 200
-        }
-        url =self.image.build_url(**image_options)
-        return url
+        return helpers.get_cloudinary_image_obj(self,
+                                         field_name='image',
+                                         as_html=False,
+                                         width=200)
     
 
     def get_image_thumbnail(self, as_html=False, width=500):
