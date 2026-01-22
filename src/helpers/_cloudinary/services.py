@@ -4,12 +4,15 @@ def get_cloudinary_image_obj(instance,
                        field_name='image',
                        as_html=False,
                        width=1200):
-    if not instance.image:
+    if not hasattr(instance, field_name):
+          return ""
+    image_obj = getattr(instance, field_name)
+    if not image_obj:
             return ""
     image_options = {
         "width": width
     }
     if as_html:
-          return instance.image.image(**image_options)
-    url =instance.image.build_url(**image_options)
+          return image_obj.image(**image_options)
+    url =image_obj.build_url(**image_options)
     return url
