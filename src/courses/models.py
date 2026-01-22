@@ -63,7 +63,8 @@ class Course(models.Model):
     # image = models.ImageField(upload_to=handle_upload,blank=True, null=True)
     image = CloudinaryField("image", 
                             null=True, 
-                            public_id_prefix=get_public_id_prefix, 
+                            public_id_prefix=get_public_id_prefix,
+                            display_name=get_display_name,
                             tags=["course", "thumbnail"]
                             )
     access = models.CharField(max_length=20,
@@ -119,8 +120,21 @@ class Lesson(models.Model):
     public_id = models.CharField(max_length=300, blank=True, null=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    thumbnail = CloudinaryField("image", blank=True, null=True)
-    video = CloudinaryField("video", blank=True, null=True, resource_type="video")
+    thumbnail = CloudinaryField("image",
+                                public_id_prefix=get_public_id_prefix,
+                                display_name=get_display_name,
+                                tags=["thumbnail", "lesson"],
+                                blank=True, 
+                                null=True
+                                )
+    video = CloudinaryField("video", 
+                            public_id_prefix=get_public_id_prefix,
+                            display_name=get_display_name,
+                            tags=["video", "lesson"],
+                            blank=True, 
+                            null=True, 
+                            resource_type="video"
+                            )
     order = models.IntegerField(default=0)
     can_preview = models.BooleanField(default=False, help_text="Can students view this lesson without enrolling?")
     status = models.CharField(max_length=10,
@@ -136,3 +150,14 @@ class Lesson(models.Model):
         if self.public_id == "" or self.public_id is None:
             self.public_id = generate_public_id(self)
         super().save(*args, **kwargs)
+
+    def get_display_name(self):
+        return f"{self.title} - {self.course.get_display_name()}"
+
+
+    @property
+    def path(self):
+        course_path = self.course.path
+        if course_path.endswith("/"):
+            course_path = course_path[:-1]
+        return f"{course_path}/{self.public_id}" 
