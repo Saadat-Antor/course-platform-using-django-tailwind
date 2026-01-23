@@ -56,7 +56,7 @@ def get_display_name(instance, *args, **kwargs):
 class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    public_id = models.CharField(max_length=300, blank=True, null=True)
+    public_id = models.CharField(max_length=300, blank=True, null=True, db_index=True)
     status = models.CharField(max_length=10,
                               choices=PublishStatus.choices,
                               default=PublishStatus.DRAFT)
@@ -96,7 +96,7 @@ class Course(models.Model):
 # LESSON Model
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    public_id = models.CharField(max_length=300, blank=True, null=True)
+    public_id = models.CharField(max_length=300, blank=True, null=True, db_index=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     thumbnail = CloudinaryField("image",
@@ -133,6 +133,9 @@ class Lesson(models.Model):
 
     def get_display_name(self):
         return f"{self.title} - {self.course.get_display_name()}"
+    
+    def get_absolute_path(self):
+        return self.path
 
 
     @property
@@ -140,4 +143,4 @@ class Lesson(models.Model):
         course_path = self.course.path
         if course_path.endswith("/"):
             course_path = course_path[:-1]
-        return f"{course_path}/{self.public_id}" 
+        return f"{course_path}/lessons/{self.public_id}" 

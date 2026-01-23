@@ -1,0 +1,5 @@
+<ul class="list-decimal">
+    {% for obj in queryset %}
+    <li><a class="text-black hover:text-purple-500 hover:underline" href="{{ obj.get_absolute_path }}">{{ obj.title }}</a></li>
+    {% endfor %}
+</ul>
