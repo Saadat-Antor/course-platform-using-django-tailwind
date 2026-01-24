@@ -2,6 +2,7 @@ from django.shortcuts import render
 from . import services
 from django.http import Http404, JsonResponse
 import helpers
+from typing import Dict, Any
 
 
 def course_list_view(request):
@@ -29,7 +30,7 @@ def lesson_detail_view(request, course_id=None, lesson_id=None):
     if lesson_obj is None:
         raise Http404
     template_name = "courses/lesson-coming-soon.html"
-    context = {
+    context: Dict[str, Any] = {
         "lesson_obj": lesson_obj
     }
     if not lesson_obj.is_coming_soon and lesson_obj.has_video:

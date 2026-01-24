@@ -133,3 +133,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CLOUDINARY_CLOUD_NAME = config("CLOUDINARY_CLOUD_NAME", default="")
 CLOUDINARY_PUBLIC_API_KEY = config("CLOUDINARY_PUBLIC_API_KEY", default="")
 CLOUDINARY_SECRET_API_KEY = config("CLOUDINARY_SECRET_API_KEY")
+
+
+# default backend EMAIL
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # django has it by default
+EMAIL_HOST = config("EMAIL_HOST", cast=str, default=None)
+EMAIL_PORT = config("EMAIL_PORT", cast=str, default='587') # Recommended
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str, default=None)
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str, default=None)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool, default=True)  # Use EMAIL_PORT 587 for TLS (most common)
+# EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool, default=False)  # EUse MAIL_PORT 465 for SSL (use either one)
