@@ -3,6 +3,7 @@ from cloudinary.models import CloudinaryField
 import helpers
 from django.utils.text import slugify
 import uuid
+from django.db.models import QuerySet
 
 helpers.cloudinary_init()
 
@@ -72,6 +73,7 @@ class Course(models.Model):
                               default=AccessRequirement.EMAIL_REQUIRED
                               )
     created = models.DateTimeField(auto_now_add=True)
+    lesson_set: "QuerySet[Lesson]"
 
     def get_display_name(self):
         return f"{self.title} - Course"
@@ -143,4 +145,12 @@ class Lesson(models.Model):
         course_path = self.course.path
         if course_path.endswith("/"):
             course_path = course_path[:-1]
-        return f"{course_path}/lessons/{self.public_id}" 
+        return f"{course_path}/lessons/{self.public_id}"
+    
+    @property
+    def is_coming_soon(self):
+        return self.status == PublishStatus.COMING_SOON
+    
+    @property
+    def has_video(self):
+        return self.video is not None
