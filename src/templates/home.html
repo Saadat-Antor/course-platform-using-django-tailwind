@@ -2,4 +2,11 @@
 
 {% block content %}
     <h1 class="text-3xl font-bold underline">Hello World</h1>
+    <div>
+        <form method="POST" action=".">
+            {% csrf_token %}
+                {{ form }}
+            <button type="submit">Login</button>
+        </form>
+    </div>
 {% endblock content %}
